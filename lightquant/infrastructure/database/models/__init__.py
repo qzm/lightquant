@@ -9,16 +9,16 @@ from .market_data_model import TickerModel, CandleModel, OrderBookModel
 from .strategy_model import StrategyModel, StrategyStatusEnum
 
 __all__ = [
-    'OrderModel',
-    'OrderTypeEnum',
-    'OrderStatusEnum',
-    'OrderSideEnum',
-    'TradeModel',
-    'AccountModel',
-    'BalanceModel',
-    'TickerModel',
-    'CandleModel',
-    'OrderBookModel',
-    'StrategyModel',
-    'StrategyStatusEnum',
-] 
+    "OrderModel",
+    "OrderTypeEnum",
+    "OrderStatusEnum",
+    "OrderSideEnum",
+    "TradeModel",
+    "AccountModel",
+    "BalanceModel",
+    "TickerModel",
+    "CandleModel",
+    "OrderBookModel",
+    "StrategyModel",
+    "StrategyStatusEnum",
+]

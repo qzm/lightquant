@@ -19,20 +19,23 @@ if current_dir not in sys.path:
 # 尝试导入lightquant包
 try:
     import lightquant
+
     print(f"\n成功导入lightquant包")
-    
+
     # 尝试导入风险管理模块
     try:
         from lightquant.domain.risk_management import RiskManager
+
         print(f"成功导入RiskManager")
-        
+
         # 尝试导入订单模块
         try:
             from lightquant.domain.models.order import Order
+
             print(f"成功导入Order")
         except ImportError as e:
             print(f"导入Order失败: {e}")
     except ImportError as e:
         print(f"导入RiskManager失败: {e}")
 except ImportError as e:
-    print(f"\n导入lightquant包失败: {e}") 
+    print(f"\n导入lightquant包失败: {e}")

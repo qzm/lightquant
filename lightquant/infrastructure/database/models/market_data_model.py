@@ -12,9 +12,9 @@ from ..database_manager import Base
 
 class TickerModel(Base):
     """行情数据库模型"""
-    
+
     __tablename__ = "tickers"
-    
+
     id = Column(String(36), primary_key=True)
     symbol = Column(String(20), nullable=False, index=True)
     exchange_id = Column(String(50), nullable=False, index=True)
@@ -27,12 +27,14 @@ class TickerModel(Base):
     quote_volume = Column(Float, nullable=True)
     timestamp = Column(DateTime, nullable=False, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
-    
+
     # 创建复合索引
     __table_args__ = (
-        Index('ix_tickers_symbol_exchange_timestamp', 'symbol', 'exchange_id', 'timestamp'),
+        Index(
+            "ix_tickers_symbol_exchange_timestamp", "symbol", "exchange_id", "timestamp"
+        ),
     )
-    
+
     def __repr__(self) -> str:
         return (
             f"<Ticker(id='{self.id}', "
@@ -45,9 +47,9 @@ class TickerModel(Base):
 
 class CandleModel(Base):
     """K线数据库模型"""
-    
+
     __tablename__ = "candles"
-    
+
     id = Column(String(36), primary_key=True)
     symbol = Column(String(20), nullable=False, index=True)
     exchange_id = Column(String(50), nullable=False, index=True)
@@ -60,12 +62,18 @@ class CandleModel(Base):
     volume = Column(Float, nullable=True)
     quote_volume = Column(Float, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
-    
+
     # 创建复合索引
     __table_args__ = (
-        Index('ix_candles_symbol_exchange_timeframe_timestamp', 'symbol', 'exchange_id', 'timeframe', 'timestamp'),
+        Index(
+            "ix_candles_symbol_exchange_timeframe_timestamp",
+            "symbol",
+            "exchange_id",
+            "timeframe",
+            "timestamp",
+        ),
     )
-    
+
     def __repr__(self) -> str:
         return (
             f"<Candle(id='{self.id}', "
@@ -78,9 +86,9 @@ class CandleModel(Base):
 
 class OrderBookModel(Base):
     """订单簿数据库模型"""
-    
+
     __tablename__ = "order_books"
-    
+
     id = Column(String(36), primary_key=True)
     symbol = Column(String(20), nullable=False, index=True)
     exchange_id = Column(String(50), nullable=False, index=True)
@@ -88,16 +96,21 @@ class OrderBookModel(Base):
     bids = Column(Text, nullable=False)  # JSON格式的买单列表
     asks = Column(Text, nullable=False)  # JSON格式的卖单列表
     created_at = Column(DateTime, default=datetime.utcnow)
-    
+
     # 创建复合索引
     __table_args__ = (
-        Index('ix_order_books_symbol_exchange_timestamp', 'symbol', 'exchange_id', 'timestamp'),
+        Index(
+            "ix_order_books_symbol_exchange_timestamp",
+            "symbol",
+            "exchange_id",
+            "timestamp",
+        ),
     )
-    
+
     def __repr__(self) -> str:
         return (
             f"<OrderBook(id='{self.id}', "
             f"symbol='{self.symbol}', "
             f"exchange_id='{self.exchange_id}', "
             f"timestamp='{self.timestamp}')>"
-        ) 
+        )

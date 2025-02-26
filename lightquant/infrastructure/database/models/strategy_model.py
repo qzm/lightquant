@@ -13,6 +13,7 @@ from ..database_manager import Base
 
 class StrategyStatusEnum(enum.Enum):
     """策略状态枚举"""
+
     CREATED = "created"
     RUNNING = "running"
     PAUSED = "paused"
@@ -22,21 +23,26 @@ class StrategyStatusEnum(enum.Enum):
 
 # 策略与订单的多对多关系表
 strategy_orders = Table(
-    'strategy_orders',
+    "strategy_orders",
     Base.metadata,
-    Column('strategy_id', String(36), ForeignKey('strategies.id'), primary_key=True),
-    Column('order_id', String(36), ForeignKey('orders.id'), primary_key=True)
+    Column("strategy_id", String(36), ForeignKey("strategies.id"), primary_key=True),
+    Column("order_id", String(36), ForeignKey("orders.id"), primary_key=True),
 )
 
 
 class StrategyModel(Base):
     """策略数据库模型"""
-    
+
     __tablename__ = "strategies"
-    
+
     id = Column(String(36), primary_key=True)
     name = Column(String(100), nullable=False, index=True)
-    status = Column(Enum(StrategyStatusEnum), nullable=False, default=StrategyStatusEnum.CREATED, index=True)
+    status = Column(
+        Enum(StrategyStatusEnum),
+        nullable=False,
+        default=StrategyStatusEnum.CREATED,
+        index=True,
+    )
     config = Column(Text, nullable=False)  # JSON格式的策略配置
     symbols = Column(Text, nullable=False)  # JSON格式的交易对列表
     exchange_ids = Column(Text, nullable=False)  # JSON格式的交易所ID列表
@@ -48,13 +54,13 @@ class StrategyModel(Base):
     start_time = Column(DateTime, nullable=True)
     stop_time = Column(DateTime, nullable=True)
     last_run_time = Column(DateTime, nullable=True)
-    
+
     # 关联关系
     orders = relationship("OrderModel", secondary=strategy_orders, backref="strategies")
-    
+
     def __repr__(self) -> str:
         return (
             f"<Strategy(id='{self.id}', "
             f"name='{self.name}', "
             f"status='{self.status.value}')>"
-        ) 
+        )

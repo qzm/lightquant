@@ -7,7 +7,7 @@ from .market_data_service import MarketDataService
 from .strategy_service import StrategyService
 
 __all__ = [
-    'OrderService',
-    'MarketDataService',
-    'StrategyService',
-] 
+    "OrderService",
+    "MarketDataService",
+    "StrategyService",
+]

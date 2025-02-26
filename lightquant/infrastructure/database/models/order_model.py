@@ -14,6 +14,7 @@ from ..database_manager import Base
 
 class OrderTypeEnum(enum.Enum):
     """订单类型枚举"""
+
     MARKET = "market"
     LIMIT = "limit"
     STOP = "stop"
@@ -23,6 +24,7 @@ class OrderTypeEnum(enum.Enum):
 
 class OrderStatusEnum(enum.Enum):
     """订单状态枚举"""
+
     CREATED = "created"
     SUBMITTED = "submitted"
     PARTIAL = "partial"
@@ -34,15 +36,16 @@ class OrderStatusEnum(enum.Enum):
 
 class OrderSideEnum(enum.Enum):
     """订单方向枚举"""
+
     BUY = "buy"
     SELL = "sell"
 
 
 class OrderModel(Base):
     """订单数据库模型"""
-    
+
     __tablename__ = "orders"
-    
+
     id = Column(String(36), primary_key=True)
     strategy_id = Column(String(36), nullable=False, index=True)
     exchange_id = Column(String(50), nullable=False, index=True)
@@ -54,7 +57,12 @@ class OrderModel(Base):
     stop_price = Column(Float, nullable=True)
     filled_amount = Column(Float, default=0.0)
     average_price = Column(Float, nullable=True)
-    status = Column(Enum(OrderStatusEnum), nullable=False, default=OrderStatusEnum.CREATED, index=True)
+    status = Column(
+        Enum(OrderStatusEnum),
+        nullable=False,
+        default=OrderStatusEnum.CREATED,
+        index=True,
+    )
     exchange_order_id = Column(String(100), nullable=True, index=True)
     client_order_id = Column(String(100), nullable=True, index=True)
     params = Column(Text, nullable=True)  # JSON格式的额外参数
@@ -64,10 +72,12 @@ class OrderModel(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     submitted_at = Column(DateTime, nullable=True)
     closed_at = Column(DateTime, nullable=True)
-    
+
     # 关联关系
-    trades = relationship("TradeModel", back_populates="order", cascade="all, delete-orphan")
-    
+    trades = relationship(
+        "TradeModel", back_populates="order", cascade="all, delete-orphan"
+    )
+
     def __repr__(self) -> str:
         return (
             f"<Order(id='{self.id}', "
@@ -75,4 +85,4 @@ class OrderModel(Base):
             f"type='{self.order_type.value}', "
             f"side='{self.side.value}', "
             f"status='{self.status.value}')>"
-        ) 
+        )

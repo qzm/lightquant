@@ -8,8 +8,8 @@ from .strategy_context import StrategyContext
 from .strategy_result import StrategyResult
 
 __all__ = [
-    'StrategyEngine',
-    'BaseStrategy',
-    'StrategyContext',
-    'StrategyResult',
-] 
+    "StrategyEngine",
+    "BaseStrategy",
+    "StrategyContext",
+    "StrategyResult",
+]

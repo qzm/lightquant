@@ -6,9 +6,9 @@ from .risk_manager import RiskManager
 from .risk_rule import RiskRule, PositionSizeRule, MaxDrawdownRule, MaxTradesPerDayRule
 
 __all__ = [
-    'RiskManager',
-    'RiskRule',
-    'PositionSizeRule',
-    'MaxDrawdownRule',
-    'MaxTradesPerDayRule',
-] 
+    "RiskManager",
+    "RiskRule",
+    "PositionSizeRule",
+    "MaxDrawdownRule",
+    "MaxTradesPerDayRule",
+]

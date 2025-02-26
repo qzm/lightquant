@@ -11,9 +11,9 @@ from .exchange_factory import ExchangeFactory
 # from .huobi_adapter import HuobiAdapter
 
 __all__ = [
-    'ExchangeAdapter',
-    'BinanceAdapter',
-    'ExchangeFactory',
+    "ExchangeAdapter",
+    "BinanceAdapter",
+    "ExchangeFactory",
     # 'OkexAdapter',
     # 'HuobiAdapter',
-] 
+]

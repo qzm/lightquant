@@ -8,8 +8,8 @@ from .strategy_repository import StrategyRepository
 from .market_data_repository import MarketDataRepository
 
 __all__ = [
-    'OrderRepository',
-    'AccountRepository',
-    'StrategyRepository',
-    'MarketDataRepository',
-] 
+    "OrderRepository",
+    "AccountRepository",
+    "StrategyRepository",
+    "MarketDataRepository",
+]
