@@ -1,0 +1,82 @@
+# Python相关
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.env
+.venv
+env.bak/
+venv.bak/
+.python-version
+
+# IDE相关
+.idea/
+.vscode/
+*.swp
+*.swo
+.cursor/
+.history/
+.DS_Store
+
+# 数据库相关
+*.db
+*.sqlite
+*.sqlite3
+
+# 日志文件
+*.log
+logs/
+
+# 测试相关
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+
+# 本地配置文件
+config.local.py
+*.local.py
+.env.local
+
+# 临时文件
+tmp/
+temp/
+
+# 数据文件（根据项目需要可能需要调整）
+*.csv
+*.json
+*.pkl
+*.h5
+data/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# 缓存文件
+.cache/
+.mypy_cache/ 
