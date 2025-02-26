@@ -455,11 +455,36 @@ class StrategyEngine:
                 result.add_log(f"订单被风险管理器拒绝: {order.id}")
                 continue
                 
-            self.strategy_service.add_order_to_strategy(strategy_id, order.id)
+            # 提交订单到订单服务
+            try:
+                # 确保订单有策略ID
+                if not order.strategy_id:
+                    logger.warning(f"订单没有策略ID，设置为当前策略: {strategy_id}")
+                    # 这里可能需要创建新的订单对象，因为strategy_id可能是只读的
+                
+                # 提交订单
+                submitted_order = self.order_service.submit_order(order)
+                if submitted_order:
+                    # 添加订单到策略
+                    self.strategy_service.add_order_to_strategy(strategy_id, submitted_order.id)
+                    logger.info(f"订单已提交: 策略ID={strategy_id}, 订单ID={submitted_order.id}")
+                else:
+                    logger.error(f"提交订单失败: 策略ID={strategy_id}, 订单ID={order.id}")
+            except Exception as e:
+                logger.error(f"处理订单时发生错误: 策略ID={strategy_id}, 订单ID={order.id}, 错误: {e}")
         
         # 处理取消的订单
         for order_id in result.canceled_order_ids:
-            self.strategy_service.remove_order_from_strategy(strategy_id, order_id)
+            try:
+                # 取消订单
+                if self.order_service.cancel_order(order_id):
+                    # 从策略中移除订单
+                    self.strategy_service.remove_order_from_strategy(strategy_id, order_id)
+                    logger.info(f"订单已取消: 策略ID={strategy_id}, 订单ID={order_id}")
+                else:
+                    logger.error(f"取消订单失败: 策略ID={strategy_id}, 订单ID={order_id}")
+            except Exception as e:
+                logger.error(f"取消订单时发生错误: 策略ID={strategy_id}, 订单ID={order_id}, 错误: {e}")
         
         # 处理性能指标
         if result.metrics:

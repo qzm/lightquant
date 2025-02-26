@@ -31,13 +31,10 @@ class Account(AggregateRoot):
         self.exchange_id = exchange_id
         self.name = name or exchange_id
         self.balances: Dict[str, Balance] = {}
-        self._created_at_custom = datetime.now()
-        self._updated_at_custom = self._created_at_custom
     
     def update_balance(self, asset: str, free: float, locked: float = 0.0) -> None:
         """更新资产余额"""
         self.balances[asset] = Balance(asset=asset, free=free, locked=locked)
-        self._updated_at_custom = datetime.now()
         self.update()
         
         # 添加领域事件
@@ -152,6 +149,6 @@ class Account(AggregateRoot):
                 }
                 for asset, balance in self.balances.items()
             },
-            "created_at": self._created_at_custom.isoformat(),
-            "updated_at": self._updated_at_custom.isoformat()
+            "created_at": self._created_at.isoformat(),
+            "updated_at": self._updated_at.isoformat()
         } 

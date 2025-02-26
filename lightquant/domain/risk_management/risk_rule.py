@@ -39,12 +39,12 @@ class RiskRule(ABC):
     def enable(self) -> None:
         """启用规则"""
         self.enabled = True
-        self.logger.info(f"Risk rule '{self.name}' enabled")
+        self.logger.info(f"风险规则 '{self.name}' 已启用")
     
     def disable(self) -> None:
         """禁用规则"""
         self.enabled = False
-        self.logger.info(f"Risk rule '{self.name}' disabled")
+        self.logger.info(f"风险规则 '{self.name}' 已禁用")
     
     def update_params(self, params: Dict[str, Any]) -> None:
         """
@@ -56,9 +56,9 @@ class RiskRule(ABC):
         for key, value in params.items():
             if hasattr(self, key):
                 setattr(self, key, value)
-                self.logger.info(f"Updated parameter '{key}' to {value} for rule '{self.name}'")
+                self.logger.info(f"已更新规则 '{self.name}' 的参数 '{key}' 为 {value}")
             else:
-                self.logger.warning(f"Parameter '{key}' does not exist for rule '{self.name}'")
+                self.logger.warning(f"规则 '{self.name}' 不存在参数 '{key}'")
 
 
 class PositionSizeRule(RiskRule):
@@ -118,7 +118,7 @@ class PositionSizeRule(RiskRule):
         # 检查最大仓位数量
         if self.max_position_amount is not None and order.params.amount > self.max_position_amount:
             self.logger.warning(
-                f"Order amount {order.params.amount} {base_asset} exceeds max position amount {self.max_position_amount}"
+                f"订单数量 {order.params.amount} {base_asset} 超过最大仓位数量 {self.max_position_amount}"
             )
             return False
         
@@ -131,7 +131,7 @@ class PositionSizeRule(RiskRule):
                 price = ticker[symbol]['last']
         
         if price is None:
-            self.logger.warning(f"Cannot determine price for order {order.id}")
+            self.logger.warning(f"无法确定订单 {order.id} 的价格")
             return True  # 无法确定价格时，默认通过
         
         order_value = order.params.amount * price
@@ -139,7 +139,7 @@ class PositionSizeRule(RiskRule):
         # 检查最大仓位价值
         if self.max_position_value is not None and order_value > self.max_position_value:
             self.logger.warning(
-                f"Order value {order_value} {quote_asset} exceeds max position value {self.max_position_value}"
+                f"订单价值 {order_value} {quote_asset} 超过最大仓位价值 {self.max_position_value}"
             )
             return False
         
@@ -154,14 +154,19 @@ class PositionSizeRule(RiskRule):
             
             equity = account.get_equity(self.quote_asset, prices)
             if equity <= 0:
-                self.logger.warning(f"Account equity is zero or negative: {equity}")
+                self.logger.warning(f"账户权益为零或负值: {equity}")
                 return False
             
-            position_percentage = (order_value / equity) * 100
-            if position_percentage > self.max_position_percentage:
-                self.logger.warning(
-                    f"Order position percentage {position_percentage:.2f}% exceeds max {self.max_position_percentage}%"
-                )
+            # 避免除零错误
+            try:
+                position_percentage = (order_value / equity) * 100
+                if position_percentage > self.max_position_percentage:
+                    self.logger.warning(
+                        f"订单仓位百分比 {position_percentage:.2f}% 超过最大值 {self.max_position_percentage}%"
+                    )
+                    return False
+            except ZeroDivisionError:
+                self.logger.error("计算仓位百分比时发生除零错误")
                 return False
         
         return True
@@ -213,13 +218,13 @@ class MaxDrawdownRule(RiskRule):
         
         # 检查上下文中是否有回撤信息
         if 'drawdown' not in context:
-            self.logger.warning("Drawdown information not available in context")
+            self.logger.warning("上下文中没有回撤信息")
             return True  # 无法确定回撤时，默认通过
         
         current_drawdown = context['drawdown']
         if current_drawdown > self.max_drawdown_percentage:
             self.logger.warning(
-                f"Current drawdown {current_drawdown:.2f}% exceeds max drawdown {self.max_drawdown_percentage}%"
+                f"当前回撤 {current_drawdown:.2f}% 超过最大回撤 {self.max_drawdown_percentage}%"
             )
             return False
         
@@ -270,20 +275,30 @@ class MaxTradesPerDayRule(RiskRule):
             return True
         
         # 检查日期是否变更，如果变更则重置计数
-        today = date.today()
-        if today != self._current_date:
+        # 优先使用上下文中的当前时间（对回测模式友好）
+        current_date = None
+        if 'current_time' in context:
+            current_time = context['current_time']
+            if isinstance(current_time, datetime):
+                current_date = current_time.date()
+        
+        # 如果上下文中没有时间信息，则使用系统当前日期
+        if current_date is None:
+            current_date = date.today()
+            
+        if current_date != self._current_date:
             self._trades_today = []
-            self._current_date = today
+            self._current_date = current_date
         
         # 检查今日交易次数是否已达上限
         if len(self._trades_today) >= self.max_trades:
             self.logger.warning(
-                f"Max trades per day ({self.max_trades}) reached for {today.isoformat()}"
+                f"已达到每日最大交易次数 ({self.max_trades}) - {self._current_date.isoformat()}"
             )
             return False
         
         # 记录本次交易
         self._trades_today.append(order.id)
-        self.logger.info(f"Trade {len(self._trades_today)}/{self.max_trades} for today")
+        self.logger.info(f"今日交易: {len(self._trades_today)}/{self.max_trades}")
         
         return True 

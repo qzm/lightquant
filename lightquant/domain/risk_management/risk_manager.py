@@ -31,7 +31,7 @@ class RiskManager:
             rule: 要添加的风险控制规则
         """
         self.rules[rule.name] = rule
-        self.logger.info(f"Added risk rule: {rule.name}")
+        self.logger.info(f"添加风险规则: {rule.name}")
     
     def remove_rule(self, rule_name: str) -> bool:
         """
@@ -45,10 +45,10 @@ class RiskManager:
         """
         if rule_name in self.rules:
             del self.rules[rule_name]
-            self.logger.info(f"Removed risk rule: {rule_name}")
+            self.logger.info(f"移除风险规则: {rule_name}")
             return True
         else:
-            self.logger.warning(f"Risk rule not found: {rule_name}")
+            self.logger.warning(f"找不到风险规则: {rule_name}")
             return False
     
     def enable_rule(self, rule_name: str) -> bool:
@@ -65,7 +65,7 @@ class RiskManager:
             self.rules[rule_name].enable()
             return True
         else:
-            self.logger.warning(f"Risk rule not found: {rule_name}")
+            self.logger.warning(f"找不到风险规则: {rule_name}")
             return False
     
     def disable_rule(self, rule_name: str) -> bool:
@@ -82,7 +82,7 @@ class RiskManager:
             self.rules[rule_name].disable()
             return True
         else:
-            self.logger.warning(f"Risk rule not found: {rule_name}")
+            self.logger.warning(f"找不到风险规则: {rule_name}")
             return False
     
     def update_rule_params(self, rule_name: str, params: Dict[str, Any]) -> bool:
@@ -100,7 +100,7 @@ class RiskManager:
             self.rules[rule_name].update_params(params)
             return True
         else:
-            self.logger.warning(f"Risk rule not found: {rule_name}")
+            self.logger.warning(f"找不到风险规则: {rule_name}")
             return False
     
     def update_context(self, context: Dict[str, Any]) -> None:
@@ -123,15 +123,15 @@ class RiskManager:
         Returns:
             bool: 如果订单符合所有启用的规则返回True，否则返回False
         """
-        self.logger.info(f"Checking order {order.id} against risk rules")
+        self.logger.info(f"检查订单 {order.id} 是否符合风险规则")
         
         for rule_name, rule in self.rules.items():
             if rule.enabled:
                 if not rule.check_order(order, account, self.context):
-                    self.logger.warning(f"Order {order.id} rejected by risk rule: {rule_name}")
+                    self.logger.warning(f"订单 {order.id} 被风险规则拒绝: {rule_name}")
                     return False
         
-        self.logger.info(f"Order {order.id} passed all risk checks")
+        self.logger.info(f"订单 {order.id} 通过所有风险检查")
         return True
     
     def get_rule(self, rule_name: str) -> Optional[RiskRule]:
