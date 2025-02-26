@@ -5,7 +5,7 @@
 import enum
 from datetime import datetime
 
-from sqlalchemy import Column, String, DateTime, Enum, Text, Table, ForeignKey
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, String, Table, Text
 from sqlalchemy.orm import relationship
 
 from ..database_manager import Base

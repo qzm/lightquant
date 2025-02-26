@@ -21,15 +21,15 @@ async def main():
         api_key="你的API密钥",
         api_secret="你的API密钥"
     )
-    
+
     # 获取行情
     ticker = await exchange.fetch_ticker("BTC/USDT")
     print(f"BTC/USDT 最新价格: {ticker.last}")
-    
+
     # 获取订单簿
     order_book = await exchange.fetch_order_book("BTC/USDT", 5)
     print(f"买一价: {order_book.bids[0].price}, 卖一价: {order_book.asks[0].price}")
-    
+
     # 关闭交易所连接
     await exchange._exchange.close()
 
@@ -70,4 +70,4 @@ ExchangeFactory.register_adapter("myexchange", MyExchangeAdapter)
 
 # 使用新的适配器
 exchange = ExchangeFactory.create_adapter("myexchange", api_key, api_secret)
-``` 
+```

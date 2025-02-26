@@ -2,11 +2,11 @@
 基础领域模型类，包括实体、值对象和聚合根
 """
 
+import uuid
 from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set, TypeVar, Generic
-import uuid
+from typing import Any, Dict, Generic, List, Optional, Set, TypeVar
 
 T = TypeVar("T")
 

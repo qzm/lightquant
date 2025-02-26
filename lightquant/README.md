@@ -72,4 +72,4 @@ run_strategy('moving_average', 'binance', 'BTC/USDT', {'short_window': 5, 'long_
 
 ## 许可证
 
-MIT 
+MIT

@@ -3,11 +3,11 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 
+from ..models.market_data import Candle, OrderBook, Ticker
+from ..models.order import Order, OrderSide, OrderType
 from ..models.strategy import StrategyConfig
-from ..models.market_data import Candle, Ticker, OrderBook
-from ..models.order import Order, OrderType, OrderSide
 from .strategy_context import StrategyContext
 from .strategy_result import StrategyResult
 

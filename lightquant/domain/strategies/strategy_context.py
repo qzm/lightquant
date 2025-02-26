@@ -3,14 +3,14 @@
 """
 
 from datetime import datetime
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 
-from ..models.order import Order, OrderType, OrderSide
 from ..models.account import Account
-from ..models.market_data import Candle, Ticker, OrderBook
-from ..services.order_service import OrderService
-from ..services.market_data_service import MarketDataService
+from ..models.market_data import Candle, OrderBook, Ticker
+from ..models.order import Order, OrderSide, OrderType
 from ..risk_management import RiskManager
+from ..services.market_data_service import MarketDataService
+from ..services.order_service import OrderService
 
 
 class StrategyContext:

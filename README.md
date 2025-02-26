@@ -2,6 +2,10 @@
 
 LightQuant是一个基于Python的数字货币量化交易框架，采用领域驱动设计(DDD)架构，提供了一套完整的工具和接口，用于开发、测试和部署数字货币交易策略。
 
+## 代码风格
+
+本项目使用 black 和 isort 进行代码格式化，并通过 pre-commit 钩子在提交代码时自动运行。详细信息请参阅 [代码风格指南](docs/code_style.md)。
+
 ## 架构设计
 
 LightQuant采用领域驱动设计(DDD)架构，将系统分为以下几个层次：
@@ -94,7 +98,7 @@ class MyStrategy(BaseStrategy):
     def initialize(self) -> None:
         # 初始化策略
         pass
-        
+
     def on_candle(self, candle) -> StrategyResult:
         # 处理K线数据
         result = StrategyResult()
@@ -223,31 +227,31 @@ class RiskAwareStrategy(BaseStrategy):
                 max_position_percentage=5.0
             )
             self.context.risk_manager.add_rule(position_rule)
-            
+
             # 添加最大回撤规则
             drawdown_rule = MaxDrawdownRule(
                 max_drawdown_percentage=10.0
             )
             self.context.risk_manager.add_rule(drawdown_rule)
-    
+
     def on_candle(self, candle) -> StrategyResult:
         result = StrategyResult()
-        
+
         # 计算当前回撤并更新风险管理器上下文
         drawdown = calculate_drawdown(candle)
         if self.context and self.context.risk_manager:
             self.context.risk_manager.update_context({'drawdown': drawdown})
-        
+
         # 创建订单（会自动进行风险检查）
         order = self.create_market_order(...)
-        
+
         if order:
             # 订单通过风险检查
             result.add_order(order)
         else:
             # 订单被风险管理器拒绝
             result.add_log("订单被风险管理器拒绝")
-        
+
         return result
 ```
 
@@ -274,4 +278,4 @@ class RiskAwareStrategy(BaseStrategy):
 
 ## 许可证
 
-本项目采用MIT许可证。详见[LICENSE](LICENSE)文件。 
+本项目采用MIT许可证。详见[LICENSE](LICENSE)文件。

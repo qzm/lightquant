@@ -5,8 +5,8 @@
 """
 
 import logging
-import sys
 import os
+import sys
 from datetime import datetime
 
 # 添加项目根目录到Python路径
@@ -15,15 +15,14 @@ root_dir = os.path.dirname(current_dir)
 if root_dir not in sys.path:
     sys.path.insert(0, root_dir)
 
-from lightquant.domain.models.order import Order, OrderParams, OrderType, OrderSide
 from lightquant.domain.models.account import Account, Balance
-from lightquant.domain.risk_management import RiskManager
+from lightquant.domain.models.order import Order, OrderParams, OrderSide, OrderType
 from lightquant.domain.risk_management import (
-    PositionSizeRule,
     MaxDrawdownRule,
     MaxTradesPerDayRule,
+    PositionSizeRule,
+    RiskManager,
 )
-
 
 # 配置日志
 logging.basicConfig(

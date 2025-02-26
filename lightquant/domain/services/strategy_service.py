@@ -2,11 +2,11 @@
 策略服务，处理策略相关的领域逻辑
 """
 
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List, Optional
 
 from ..models.strategy import Strategy, StrategyConfig, StrategyStatus
-from ..repositories.strategy_repository import StrategyRepository
 from ..repositories.order_repository import OrderRepository
+from ..repositories.strategy_repository import StrategyRepository
 
 
 class StrategyService:

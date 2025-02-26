@@ -2,12 +2,12 @@
 订单服务，处理订单相关的领域逻辑
 """
 
-from typing import Optional, List, Dict, Any
+from typing import Any, Dict, List, Optional
 
-from ..models.order import Order, OrderParams, OrderType, OrderSide, OrderStatus
 from ..models.account import Account
-from ..repositories.order_repository import OrderRepository
+from ..models.order import Order, OrderParams, OrderSide, OrderStatus, OrderType
 from ..repositories.account_repository import AccountRepository
+from ..repositories.order_repository import OrderRepository
 
 
 class OrderService:

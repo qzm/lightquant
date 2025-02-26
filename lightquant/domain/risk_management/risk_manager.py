@@ -3,10 +3,10 @@
 """
 
 import logging
-from typing import Dict, List, Any, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Type, Union
 
-from ..models.order import Order
 from ..models.account import Account
+from ..models.order import Order
 from .risk_rule import RiskRule
 
 

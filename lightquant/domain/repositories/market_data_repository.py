@@ -4,9 +4,9 @@
 
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
-from ..models.market_data import Ticker, Candle, OrderBook
+from ..models.market_data import Candle, OrderBook, Ticker
 
 
 class MarketDataRepository(ABC):

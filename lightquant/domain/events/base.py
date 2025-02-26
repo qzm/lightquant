@@ -2,10 +2,10 @@
 基础领域事件类
 """
 
+import uuid
 from abc import ABC
 from datetime import datetime
 from typing import Any, Dict
-import uuid
 
 
 class DomainEvent(ABC):

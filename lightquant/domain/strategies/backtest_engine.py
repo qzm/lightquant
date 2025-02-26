@@ -5,21 +5,20 @@
 import logging
 import time
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Type, Any, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Type
 
-from ..models.strategy import Strategy, StrategyConfig, StrategyStatus
-from ..models.market_data import Candle, Ticker, OrderBook
-from ..models.order import Order, OrderType, OrderSide, OrderStatus
 from ..models.account import Account, Balance
-from ..services.strategy_service import StrategyService
-from ..services.order_service import OrderService
-from ..services.market_data_service import MarketDataService
+from ..models.market_data import Candle, OrderBook, Ticker
+from ..models.order import Order, OrderSide, OrderStatus, OrderType
+from ..models.strategy import Strategy, StrategyConfig, StrategyStatus
 from ..repositories.account_repository import AccountRepository
 from ..risk_management import RiskManager
+from ..services.market_data_service import MarketDataService
+from ..services.order_service import OrderService
+from ..services.strategy_service import StrategyService
 from .base_strategy import BaseStrategy
 from .strategy_context import StrategyContext
 from .strategy_result import StrategyResult
-
 
 logger = logging.getLogger(__name__)
 

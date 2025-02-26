@@ -4,14 +4,14 @@
 
 import json
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 from sqlalchemy import desc
 
-from ....domain.models.market_data import Ticker, Candle, OrderBook, OrderBookEntry
+from ....domain.models.market_data import Candle, OrderBook, OrderBookEntry, Ticker
 from ....domain.repositories.market_data_repository import MarketDataRepository
-from ..models.market_data_model import TickerModel, CandleModel, OrderBookModel
 from ..database_manager import DatabaseManager
+from ..models.market_data_model import CandleModel, OrderBookModel, TickerModel
 
 
 class SQLMarketDataRepository(MarketDataRepository):

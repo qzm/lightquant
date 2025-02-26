@@ -2,26 +2,23 @@
 领域事件模块，包含所有领域事件
 """
 
+from .account_events import AccountUpdated, BalanceUpdated
 from .base import DomainEvent
 from .order_events import (
-    OrderSubmitted,
-    OrderPartiallyFilled,
-    OrderFilled,
     OrderCanceled,
-    OrderRejected,
     OrderExpired,
-)
-from .account_events import (
-    BalanceUpdated,
-    AccountUpdated,
+    OrderFilled,
+    OrderPartiallyFilled,
+    OrderRejected,
+    OrderSubmitted,
 )
 from .strategy_events import (
-    StrategyStarted,
+    StrategyConfigUpdated,
+    StrategyError,
     StrategyPaused,
     StrategyResumed,
+    StrategyStarted,
     StrategyStopped,
-    StrategyError,
-    StrategyConfigUpdated,
 )
 
 __all__ = [

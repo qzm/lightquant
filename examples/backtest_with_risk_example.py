@@ -6,36 +6,36 @@
 
 import logging
 import time
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
 
-from lightquant.domain.models.strategy import StrategyConfig
-from lightquant.domain.models.order import OrderSide
 from lightquant.domain.models.market_data import Candle
-from lightquant.domain.strategies import BaseStrategy, StrategyResult
-from lightquant.domain.services.strategy_service import StrategyService
-from lightquant.domain.services.order_service import OrderService
-from lightquant.domain.services.market_data_service import MarketDataService
-from lightquant.domain.repositories.strategy_repository import StrategyRepository
-from lightquant.domain.repositories.order_repository import OrderRepository
+from lightquant.domain.models.order import OrderSide
+from lightquant.domain.models.strategy import StrategyConfig
 from lightquant.domain.repositories.account_repository import AccountRepository
 from lightquant.domain.repositories.market_data_repository import MarketDataRepository
-from lightquant.domain.strategies.backtest_engine import BacktestEngine
+from lightquant.domain.repositories.order_repository import OrderRepository
+from lightquant.domain.repositories.strategy_repository import StrategyRepository
 from lightquant.domain.risk_management import (
-    PositionSizeRule,
     MaxDrawdownRule,
     MaxTradesPerDayRule,
+    PositionSizeRule,
 )
+from lightquant.domain.services.market_data_service import MarketDataService
+from lightquant.domain.services.order_service import OrderService
+from lightquant.domain.services.strategy_service import StrategyService
+from lightquant.domain.strategies import BaseStrategy, StrategyResult
+from lightquant.domain.strategies.backtest_engine import BacktestEngine
 from lightquant.infrastructure.database import DatabaseManager, init_db
 from lightquant.infrastructure.database.repositories import (
-    SQLStrategyRepository,
-    SQLOrderRepository,
     SQLAccountRepository,
     SQLMarketDataRepository,
+    SQLOrderRepository,
+    SQLStrategyRepository,
 )
-
 
 # 配置日志
 logging.basicConfig(

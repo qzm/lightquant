@@ -3,9 +3,9 @@
 """
 
 from datetime import datetime
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List, Optional
 
-from ..models.market_data import Ticker, Candle, OrderBook
+from ..models.market_data import Candle, OrderBook, Ticker
 from ..repositories.market_data_repository import MarketDataRepository
 
 

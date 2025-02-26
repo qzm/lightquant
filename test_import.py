@@ -2,8 +2,8 @@
 测试导入模块
 """
 
-import sys
 import os
+import sys
 
 # 打印Python路径
 print("Python路径:")

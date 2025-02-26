@@ -4,11 +4,11 @@
 
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
-from ...domain.models.market_data import Ticker, Candle, OrderBook, OrderBookEntry
-from ...domain.models.order import Order, OrderParams, OrderType, OrderSide, OrderStatus
 from ...domain.models.account import Balance
+from ...domain.models.market_data import Candle, OrderBook, OrderBookEntry, Ticker
+from ...domain.models.order import Order, OrderParams, OrderSide, OrderStatus, OrderType
 
 
 class ExchangeAdapter(ABC):

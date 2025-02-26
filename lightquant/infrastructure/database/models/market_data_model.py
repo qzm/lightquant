@@ -4,7 +4,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import Column, String, Float, DateTime, Text, Index
+from sqlalchemy import Column, DateTime, Float, Index, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 
 from ..database_manager import Base

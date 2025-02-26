@@ -6,8 +6,8 @@ import asyncio
 import os
 from datetime import datetime, timedelta
 
+from lightquant.domain.models.order import Order, OrderSide, OrderType
 from lightquant.infrastructure.exchanges import ExchangeFactory
-from lightquant.domain.models.order import Order, OrderType, OrderSide
 
 
 async def main():

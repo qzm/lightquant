@@ -3,7 +3,7 @@
 """
 
 from .risk_manager import RiskManager
-from .risk_rule import RiskRule, PositionSizeRule, MaxDrawdownRule, MaxTradesPerDayRule
+from .risk_rule import MaxDrawdownRule, MaxTradesPerDayRule, PositionSizeRule, RiskRule
 
 __all__ = [
     "RiskManager",

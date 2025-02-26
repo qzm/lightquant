@@ -3,25 +3,25 @@
 """
 
 import json
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from sqlalchemy.orm import Session
 
 from ....domain.models.order import (
     Order,
-    OrderType,
-    OrderStatus,
-    OrderSide,
     OrderParams,
+    OrderSide,
+    OrderStatus,
+    OrderType,
 )
 from ....domain.repositories.order_repository import OrderRepository
+from ..database_manager import DatabaseManager
 from ..models.order_model import (
     OrderModel,
-    OrderTypeEnum,
-    OrderStatusEnum,
     OrderSideEnum,
+    OrderStatusEnum,
+    OrderTypeEnum,
 )
-from ..database_manager import DatabaseManager
 
 
 class SQLOrderRepository(OrderRepository):

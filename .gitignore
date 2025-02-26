@@ -79,4 +79,4 @@ data/
 
 # 缓存文件
 .cache/
-.mypy_cache/ 
+.mypy_cache/

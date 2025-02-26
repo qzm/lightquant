@@ -2,11 +2,11 @@
 订单模型，包括订单实体和相关值对象
 """
 
+import uuid
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum, auto
-from typing import Optional, Dict, Any
-import uuid
+from typing import Any, Dict, Optional
 
 from .base import AggregateRoot, ValueObject
 

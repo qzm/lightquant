@@ -3,14 +3,14 @@
 """
 
 import json
-from typing import List, Optional, Dict, Any, Set
+from typing import Any, Dict, List, Optional, Set
 
 from sqlalchemy.orm import Session
 
 from ....domain.models.strategy import Strategy, StrategyConfig, StrategyStatus
 from ....domain.repositories.strategy_repository import StrategyRepository
-from ..models.strategy_model import StrategyModel, StrategyStatusEnum
 from ..database_manager import DatabaseManager
+from ..models.strategy_model import StrategyModel, StrategyStatusEnum
 
 
 class SQLStrategyRepository(StrategyRepository):

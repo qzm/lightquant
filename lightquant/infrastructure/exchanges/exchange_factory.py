@@ -4,8 +4,8 @@
 
 from typing import Dict, Optional, Type
 
-from .exchange_adapter import ExchangeAdapter
 from .binance_adapter import BinanceAdapter
+from .exchange_adapter import ExchangeAdapter
 
 
 class ExchangeFactory:

@@ -2,20 +2,20 @@
 数据库初始化脚本
 """
 
-import os
 import argparse
+import os
 from typing import Optional
 
-from .database_manager import DatabaseManager, Base
+from .database_manager import Base, DatabaseManager
 from .models import (
-    OrderModel,
-    TradeModel,
     AccountModel,
     BalanceModel,
-    TickerModel,
     CandleModel,
     OrderBookModel,
+    OrderModel,
     StrategyModel,
+    TickerModel,
+    TradeModel,
 )
 
 

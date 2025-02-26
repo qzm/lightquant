@@ -2,10 +2,10 @@
 账户模型，包括账户和余额
 """
 
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List, Optional, Any
-import uuid
+from typing import Any, Dict, List, Optional
 
 from .base import AggregateRoot, ValueObject
 
