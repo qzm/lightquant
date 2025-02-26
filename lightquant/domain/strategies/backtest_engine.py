@@ -68,16 +68,6 @@ class BacktestEngine:
         self.commission_rate = 0.001  # 手续费率
         self.slippage = 0.0  # 滑点
         
-        # 回测数据
-        self.candles: List[Candle] = []
-        self.account: Optional[Account] = None
-        self.orders: List[Order] = []
-        self.equity_curve: List[Tuple[datetime, float]] = []
-        self.performance_metrics: Dict[str, Any] = {}
-        
-        # 风险管理器
-        self.risk_manager: Optional[RiskManager] = None
-        
         # 策略实例映射表：策略ID -> 策略实例
         self.strategy_instances: Dict[str, BaseStrategy] = {}
         
@@ -88,16 +78,23 @@ class BacktestEngine:
         self.strategy_classes: Dict[str, Type[BaseStrategy]] = {}
         
         # 回测数据
+        self.account: Optional[Account] = None
+        self.orders: List[Order] = []
         self.candles: Dict[str, Dict[str, List[Candle]]] = {}  # symbol -> timeframe -> candles
         self.tickers: Dict[str, List[Ticker]] = {}  # symbol -> tickers
         self.orderbooks: Dict[str, List[OrderBook]] = {}  # symbol -> orderbooks
         
         # 回测结果
+        self.equity_curve: List[Tuple[datetime, float]] = []
         self.account_snapshots: List[Tuple[datetime, Dict[str, float]]] = []  # (timestamp, balances)
+        self.performance_metrics: Dict[str, Any] = {}
         
         # 回测状态
         self.is_running = False
         self.current_time: datetime = datetime.utcnow()
+        
+        # 风险管理器
+        self.risk_manager: Optional[RiskManager] = None
     
     def register_strategy_class(self, strategy_class: Type[BaseStrategy]) -> None:
         """
@@ -448,6 +445,11 @@ class BacktestEngine:
             # 更新当前时间
             self.current_time = candle.timestamp
             context.update_current_time(self.current_time)
+            
+            # 更新风险管理器上下文
+            if self.risk_manager:
+                ticker_context = {'ticker': {candle.symbol: {'last': candle.close}}}
+                self.risk_manager.update_context(ticker_context)
             
             # 处理未完成的订单
             for order_id, order in list(context.orders.items()):

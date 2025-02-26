@@ -149,8 +149,10 @@ class PositionSizeRule(RiskRule):
             prices = {}
             if 'ticker' in context:
                 ticker = context['ticker']
-                for symbol, data in ticker.items():
-                    prices[symbol] = data['last']
+                if isinstance(ticker, dict):
+                    for symbol, data in ticker.items():
+                        if isinstance(data, dict) and 'last' in data:
+                            prices[symbol] = data['last']
             
             equity = account.get_equity(self.quote_asset, prices)
             if equity <= 0:

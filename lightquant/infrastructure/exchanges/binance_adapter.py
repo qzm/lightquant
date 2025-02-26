@@ -149,12 +149,17 @@ class BinanceAdapter(ExchangeAdapter):
             if not order.exchange_order_id:
                 return False, None, None, None, "缺少交易所订单ID"
                 
+            # 获取订单信息
             order_data = await self._exchange.fetch_order(order.exchange_order_id, order.symbol)
+            
+            # 转换订单状态
             status = self.map_order_status(order_data['status'])
+            
+            # 获取已成交数量和平均成交价格
             filled = order_data['filled']
-            avg_price = order_data['price'] if order_data['price'] else (
-                order_data['cost'] / filled if filled > 0 else None
-            )
+            avg_price = order_data['price']
+            if filled > 0 and 'average' in order_data and order_data['average']:
+                avg_price = order_data['average']
             
             return True, status, filled, avg_price, None
         except Exception as e:

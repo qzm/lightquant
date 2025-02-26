@@ -88,6 +88,9 @@ class StrategyContext:
         Returns:
             创建的订单，如果创建失败则返回None
         """
+        import logging
+        logger = logging.getLogger(__name__)
+        
         order = self.order_service.create_order(
             strategy_id=self.strategy_id,
             symbol=symbol,
@@ -101,9 +104,13 @@ class StrategyContext:
         if order:
             # 进行风险检查
             if self.risk_manager and not self.risk_manager.check_order(order, self.account):
+                logger.warning(f"订单被风险管理器拒绝: 策略ID={self.strategy_id}, 订单ID={order.id}, 交易对={symbol}, 方向={side}, 数量={amount}")
                 return None
                 
             self.orders[order.id] = order
+            logger.info(f"订单已创建: 策略ID={self.strategy_id}, 订单ID={order.id}, 交易对={symbol}, 方向={side}, 数量={amount}")
+        else:
+            logger.error(f"创建订单失败: 策略ID={self.strategy_id}, 交易对={symbol}, 方向={side}, 数量={amount}")
         
         return order
     

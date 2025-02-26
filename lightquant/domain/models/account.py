@@ -114,7 +114,7 @@ class Account(AggregateRoot):
             float: 账户总权益
         """
         if not prices:
-            return 0.0
+            prices = {}
             
         equity = 0.0
         
@@ -128,9 +128,22 @@ class Account(AggregateRoot):
             if asset == quote_asset:
                 continue
                 
+            # 尝试不同的价格查找方式
             symbol = f"{asset}/{quote_asset}"
+            price = None
+            
+            # 直接查找完整交易对
             if symbol in prices:
-                equity += balance.total * prices[symbol]
+                price = prices[symbol]
+            # 尝试在嵌套字典中查找
+            elif symbol in prices and isinstance(prices[symbol], dict) and 'last' in prices[symbol]:
+                price = prices[symbol]['last']
+            # 尝试直接查找资产价格
+            elif asset in prices:
+                price = prices[asset]
+                
+            if price is not None:
+                equity += balance.total * price
                 
         return equity
     

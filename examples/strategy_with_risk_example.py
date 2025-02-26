@@ -134,11 +134,20 @@ class RiskAwareMovingAverageStrategy(BaseStrategy):
             current_close = candle.close
             if highest_close > 0:
                 drawdown = (highest_close - current_close) / highest_close * 100
+                # 确保回撤不为负数（当前价格高于历史最高价时）
+                drawdown = max(0, drawdown)
                 result.add_metric('drawdown', drawdown)
                 
                 # 更新风险管理器上下文
                 if self.context and self.context.risk_manager:
                     self.context.risk_manager.update_context({'drawdown': drawdown})
+            else:
+                logger.warning(f"计算回撤时发现最高价为0或负数: {highest_close}")
+                result.add_metric('drawdown', 0.0)
+                
+                # 更新风险管理器上下文
+                if self.context and self.context.risk_manager:
+                    self.context.risk_manager.update_context({'drawdown': 0.0})
         
         # 获取前一个状态
         prev_short_ma = sum(closes[-(self.short_window+1):-1]) / self.short_window

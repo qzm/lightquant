@@ -303,37 +303,42 @@ class StrategyEngine:
         Args:
             candle: K线数据
         """
-        # 获取所有运行中的策略
-        running_strategies = self.strategy_service.get_strategies_by_status(StrategyStatus.RUNNING)
+        if not self.is_running:
+            return
         
-        for strategy in running_strategies:
-            # 检查策略是否关注该交易对和时间周期
-            if (candle.symbol in strategy.config.symbols and
-                candle.timeframe in strategy.config.timeframes and
-                strategy.id in self.strategy_instances):
+        # 遍历所有策略
+        for strategy_id, strategy in self.strategy_instances.items():
+            # 检查策略是否已暂停
+            strategy_status = self.strategy_service.get_strategy_status(strategy_id)
+            if strategy_status != StrategyStatus.RUNNING:
+                continue
                 
-                try:
-                    # 更新上下文
-                    context = self.strategy_contexts[strategy.id]
-                    context.update_candle(candle)
-                    context.update_current_time(candle.timestamp)
-                    
-                    # 执行策略
-                    strategy_instance = self.strategy_instances[strategy.id]
-                    result = strategy_instance.on_candle(candle)
-                    
-                    # 处理结果
-                    self._process_strategy_result(strategy.id, result)
+            # 检查策略是否订阅了该交易对和时间周期
+            config = strategy.config
+            if candle.symbol not in config.symbols or candle.timeframe not in config.timeframes:
+                continue
                 
-                except Exception as e:
-                    logger.error(f"处理K线数据失败: 策略ID={strategy.id}, 错误: {e}")
-                    
-                    # 设置策略错误状态
-                    self.strategy_service.update_strategy_status(
-                        strategy_id=strategy.id,
-                        status=StrategyStatus.ERROR,
-                        error_message=str(e)
-                    )
+            # 获取策略上下文
+            context = self.strategy_contexts.get(strategy_id)
+            if not context:
+                continue
+                
+            # 更新风险管理器上下文
+            if strategy_id in self.risk_managers:
+                risk_manager = self.risk_managers[strategy_id]
+                # 更新市场数据
+                ticker_context = {'ticker': {candle.symbol: {'last': candle.close}}}
+                risk_manager.update_context(ticker_context)
+                
+            # 调用策略的on_candle方法
+            try:
+                result = strategy.on_candle(candle)
+                if result:
+                    self._process_strategy_result(strategy_id, result)
+            except Exception as e:
+                logger.error(f"策略 {strategy_id} 处理K线时发生错误: {e}")
+                # 可以选择暂停策略
+                # self.pause_strategy(strategy_id)
     
     def process_ticker(self, ticker: Ticker) -> None:
         """
