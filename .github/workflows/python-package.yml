@@ -28,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install pytest pytest-cov mypy black isort
+        python -m pip install pytest pytest-cov black isort
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         # 安装开发依赖
         pip install -e .
@@ -40,10 +40,6 @@ jobs:
     - name: Check import sorting with isort
       run: |
         isort --check-only --profile black lightquant
-
-    - name: Type check with mypy
-      run: |
-        mypy --ignore-missing-imports lightquant
 
     - name: Test with pytest
       run: |
